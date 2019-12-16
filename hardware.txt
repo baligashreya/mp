@@ -1,0 +1,72 @@
+
+long number1;
+long number2;
+char calSignal;
+long result;
+int led1=13;
+int led2=12;
+int led3=11;
+int led4=10;
+int b[4]={};
+int a[16][4]={{0,0,0,0},{0,0,0,1},{0,0,1,0},{0,0,1,1},{0,1,0,0},{0,1,0,1},{0,1,1,0},{0,1,1,1},{1,0,0,0},{1,0,0,1},{1,0,1,0},{1,0,1,1},{1,1,0,0},{1,1,0,1},{1,1,1,0},{1,1,1,1}};
+
+void setup()
+{
+  pinMode(led1,OUTPUT);
+  pinMode(led2,OUTPUT);
+  pinMode(led3,OUTPUT);
+  pinMode(led4,OUTPUT);
+  Serial.begin(9600);
+  Serial.println("send me a calculation");
+  Serial.println("EXAMPLE:2+3");
+  Serial.println();
+  
+}
+void loop()
+{
+  while(Serial.available()>0)
+  {
+    //Serial.read();
+    number1=Serial.parseInt();
+    Serial.println(number1);
+    calSignal=Serial.read();
+    Serial.println(calSignal);
+    number2=Serial.parseInt();
+    Serial.println(number2);
+    resolucao();
+    Serial.println("result=");
+    Serial.println(result);
+    b[0]=a[result][0];
+    b[1]=a[result][1];
+    b[2]=a[result][2];
+    b[3]=a[result][3];
+    
+    digitalWrite(led1,b[0]);
+    digitalWrite(led2,b[1]);
+    digitalWrite(led3,b[2]);
+    digitalWrite(led4,b[3]);
+    Serial.println();
+    Serial.read();
+  }
+}
+void resolucao()
+{
+  switch(calSignal)
+  {
+    case '+':
+    result=number1+number2;
+    break;
+    case '-':
+    result=number1-number2;
+    break;
+    case '*':
+    result=number1*number2;
+    break;
+    case '/':
+    result=number1/number2;
+    break;
+    default:
+    Serial.println("Invalid choice");
+    break;
+  }
+}
